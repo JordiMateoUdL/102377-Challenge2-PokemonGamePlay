@@ -18,7 +18,6 @@ void changeStatus(){
          pokemonsReady=pokemonsReady + 1;
     }
     if(current_state==WaitingPokemon && pokemonsReady==2){
-         pokemonsReady=0;
          current_state=Fighting;
     }
     if(current_state==Fighting){
@@ -280,9 +279,6 @@ void adventure(){
 
 }
 
-
-
-
 void battle(){
 
     pokemonsReady=0;
@@ -295,53 +291,53 @@ void battle(){
     if (pipe(gamePipeRW) < 0) perror("Error. Opening pokemonPipeWR");
     if (pipe(gamePipeWR) < 0) perror("Error. Opening pokemonPipeWR");
 
-    for(int p=0; p<2; p++){
+    for(int p=1; p<=2; p++){
         switch (pidPokemon[p] = fork()){
-            case -1:	perror("Error fork pokemon");
+            case -1:	perror("Error. Forking a new pokemon to battle.");
             case 0:	
-                // El pokemon rebrà informació del pare pel pipe gamePipeWR
-                if (close(gamePipeWR[1]) < 0) perror("Error closing gamePipeWR[1]");
-                if (dup2(gamePipeWR[0], 0) < 0) perror("Error dup2 gamePipeWR <- 0");
-                if (close(gamePipeWR[0]) < 0) perror("Error gamePipeWR[0]");
+                // gamePipeWR: Ash -> Pokemon (Pipe)
+                if (close(gamePipeWR[1]) < 0) perror("Error. Closing gamePipeWR[1]");
+                if (dup2(gamePipeWR[0], 0) < 0) perror("Error. Dup2 gamePipeWR <- 0");
+                if (close(gamePipeWR[0]) < 0) perror("Error. Closing gamePipeWR[0]");
 
-                //Pipe Pokedex bidirreccional 
+                // pokedexPipe1: Pokemon -> Pokedex (Pipe)
+                if (close(pokedexPipe1[1]) < 0) perror("Error. Close pokedexPipeWR [1]");
+                if (dup2(pokedexPipe1[0], 2) < 0) perror("Error. Dup2 pokedexPipeWR <- 3");
+                if (close(pokedexPipe1[0]) < 0) perror("Error. Close pokedexPipeWR [0]");
 
-                if (close(pokedexPipe1[1]) < 0) perror("Error close pokedexPipeWR [1]");
-                if (dup2(pokedexPipe1[0], 2) < 0) perror("Error dup2 pokedexPipeWR <- 3");
-                if (close(pokedexPipe1[0]) < 0) perror("Error close pokedexPipeWR [0]");
+                // pokedexPipe1: Pokedex -> Pokemon (Pipe)
+                if (close(pokedexPipe2[0]) < 0) perror("Error. Close pokedexPipeRW [0]");
+                if (dup2(pokedexPipe2[1],3) < 0) perror("Error. Dup2 pokedexPipeRW <- 4");
+                if (close(pokedexPipe2[1]) < 0) perror("Error. Close pokedexPipeRW[1]");
 
-                if (close(pokedexPipe2[0]) < 0) perror("Error close pokedexPipeRW [0]");
-                if (dup2(pokedexPipe2[1],3) < 0) perror("Error dup2 pokedexPipeRW <- 4");
-                if (close(pokedexPipe2[1]) < 0) perror("Error close pokedexPipeRW[1]");
+                // pokemon1PipeWR: Pokemon -> Pokemon (Pipe) 
+                if (dup2(pokemon1PipeWR[0], 4) < 0) perror("Error. Dup2 pokemon1PipeWR <- 5");
+                if (close(pokemon1PipeWR[0]) < 0) perror("Error. Close pokemon1PipeWR [0]");
+                if (dup2(pokemon1PipeWR[1], 5) < 0) perror("Error. Dup2 pokemon1PipeWR <- 6");
+                if (close(pokemon1PipeWR[1]) < 0) perror("Error. Close pokemon1PipeWR [1]");
 
-                //Pipe entre fills 
-                if (dup2(pokemon1PipeWR[0], 4) < 0) perror("Error dup2 pokemo1nPipeWR <- 5");
-                if (close(pokemon1PipeWR[0]) < 0) perror("Error close pokemon1PipeWR [0]");
-                if (dup2(pokemon1PipeWR[1], 5) < 0) perror("Error dup2 pokemon1PipeWR <- 6");
-                if (close(pokemon1PipeWR[1]) < 0) perror("Error close pokemon1PipeWR [1]");
+                // pokemon2PipeWR: Pokemon -> Pokemon (Pipe) 
+                if (dup2(pokemon2PipeWR[0], 6) < 0) perror("Error. Dup2 pokemon2PipeWR <- 7");
+                if (close(pokemon2PipeWR[0]) < 0) perror("Error. Close pokemon2PipeWR [0]");
+                if (dup2(pokemon2PipeWR[1], 7) < 0) perror("Error. Dup2 pokemon2PipeWR <-8");
+                if (close(pokemon2PipeWR[1]) < 0) perror("Error. Close pokemon2PipeWR [1]");
 
-                if (dup2(pokemon2PipeWR[0], 6) < 0) perror("Error dup2 pokemo2nPipeWR <- 7");
-                if (close(pokemon2PipeWR[0]) < 0) perror("Error close pokemon2PipeWR [0]");
-                if (dup2(pokemon2PipeWR[1], 7) < 0) perror("Error dup2 pokemon2PipeWR <-8");
-                if (close(pokemon2PipeWR[1]) < 0) perror("Error close pokemon2PipeWR [1]");
+                // arguments
+                char initialFightMode[32];
+                char color[32];
+                sprintf(initialFightMode,"%d", 4+p-1);
+                sprintf(color,"%d", p-1);
 
-                // Fem el recubriment de la pokedex
-                char a1[32]; 
-                char a2[32];
-                sprintf(a1,"%d", 4+p);
-                sprintf(a2,"%d", p);
-                char *args3[] = {"pokemon-fight",a1,a2, NULL};
-                execv(args3[0], args3);
+                char *pokemon_fight[] = {"pokemon-fight",initialFightMode,color, NULL};
+                execv(pokemon_fight[0], pokemon_fight);
         }
+        printf("p:%d pokemons:%d\n",p,pokemonsReady); fflush(stdout);
+        while(pokemonsReady<p){}
     }
-
-    
-    while(current_state==WaitingPokemon){} 
 
     sprintf(msg,"[%d] The pokemons are ready to fight...\n", getpid());
     logger("INFO", msg);
    
-
     struct info i;
     
     /**
