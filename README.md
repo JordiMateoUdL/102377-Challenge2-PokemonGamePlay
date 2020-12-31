@@ -1,12 +1,5 @@
-<img align="left" width="100" height="100" src="https://user-images.githubusercontent.com/61190134/76793662-b6b8bd00-67c5-11ea-83b2-efcc9ed462fc.png">
 
-*Instructor*: [Jordi Mateo Fornés](http:jordimateofornes.com)
-
-*Course*: 102377 - Operating Systems - [Grau en Tècniques d'Interacció Digital i de Computació](http://www.grauinteraccioicomputacio.udl.cat/ca/index.html)
-
-*University*: University of Lleida - Campus Igualada - Escola Politècnica Superior
-
-*Fall*: 2020-2021
+<img align="right" width="90" height="40" src="https://user-images.githubusercontent.com/61190134/103407124-a0fe6380-4b5d-11eb-9692-a7a372f816a2.png">
 
 # 102377-Challenge2-PokemonGamePlay
 
@@ -15,10 +8,12 @@
 |            |                                              |  
 | ---------- | -------------------------                    |  
 | Title:     | Challenge 2: Pokemon GamePay Processes       |  
-| Author:    | Jordi Mateo Fornés                           |  
-| Date:      | 2021-01-01                                   |  
+| Instructor and Author:| [Jordi Mateo Fornés](http:jordimateofornes.com)                           |  
+| *Fall*:      | 2020-2021                                   |  
+| *Course*:    |    102377 - Operating Systems - [Grau en Tècniques d'Interacció Digital i de Computació](http://www.grauinteraccioicomputacio.udl.cat/ca/index.html) |
+| University:     | [University of Lleida](http://www.udl.cat/ca/) - [Campus Igualada](http://www.campusigualada.udl.cat/ca/) - [Escola Politècnica Superior](http://www.eps.udl.cat/ca/)       |  
 | Copyright: | Copyright © 2019-2020 Jordi Mateo Fornés     |  
-| Version:   | 1.0                                          |  
+| Version:   | 1.0
 
 ## Scope
 
@@ -26,6 +21,8 @@ A UNIX process or job is the result of executing a UNIX command. Processes are c
 (1) and programs you write and compile), and the C-shell command interpreter itself. At any moment,
 a process may be either running or stopped. The UNIX operating system provides many ways to control
 these processes, such as suspending, resuming and terminating.
+
+All the tasks can be found in this document: [OS-2021-Challenge2.pdf](https://github.com/JordiMateoUdL/102377-Challenge2-PokemonGamePlay/files/5757104/OS-2021-Challenge2.pdf)
 
 ## Organization
 
@@ -95,3 +92,5 @@ docker run -it -v $(PWD):/home/pokemon-user/source  --entrypoint /bin/bash pokem
 docker run --rm  pokemon-service make run
 docker run --rm  pokemon-service make test
 ```
+
+![logo-eng](https://user-images.githubusercontent.com/61190134/103407749-0eab8f00-4b60-11eb-8b96-c26a90b7cdc6.png)
