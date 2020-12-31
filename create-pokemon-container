@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+docker rm -f pokemon-service
+
+docker rmi -f pokemon-service
+
+docker image prune
+
+docker volume prune
+
+docker build -t pokemon-service -f docker/Dockerfile .
