@@ -11,6 +11,6 @@ ENV USER pokemon-user
 COPY ./data /home/$USER/data
 COPY ./source /home/$USER/source
 
-WORKDIR /home/$USER/source
+WORKDIR /home/$USER/
 
 CMD [ "make" "./your-daemon-or-script.sh"]

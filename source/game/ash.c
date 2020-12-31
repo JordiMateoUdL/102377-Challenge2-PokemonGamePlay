@@ -1,29 +1,26 @@
 #include "ash.h"
 
 /**
- * @brief When the process receive SIG1 indicates that child (pokedex), 
- *        is ready so, we change status variable from waiting to ready.
+ * @brief This function is the handler of signal SIGUSR1. 
+ * When ash-px receives this signals it means that the process must change 
+ * it status and make progress. First time, ash process will receives SIGUSR1 
+ * when pokedex is ready. It let ash to check information in the Pokedex. 
+ * The state ready_mode indicates if ash makes an infinite loop (challenge1 requirement)
+ * or not get block and just use the Pokedex when it needs. 
+ * The other states are needed to control and sync the pokemon battles (challenge 3).
  * */
-void handlerSIG1(){
-    current_state = ready_mode;
-}
-
 void changeStatus(){
 
-    //printf("ready:%d %d",pokemonsReady,current_state);fflush(stdout);
-    
     if(current_state==WaitingPokedex){
          current_state=ready_mode;
     }
     if(current_state==WaitingPokemon && pokemonsReady<2){
          pokemonsReady=pokemonsReady + 1;
     }
-    
     if(current_state==WaitingPokemon && pokemonsReady==2){
          pokemonsReady=0;
          current_state=Fighting;
     }
-    
     if(current_state==Fighting){
         current_state=EndFight;
     }
@@ -46,6 +43,11 @@ void printPokemon( struct pokemon pokemon){
     write(1,&s,strlen(s));
 }
 
+/**
+ * @brief This function handles a proper end to ash-px processes. It always ensures:
+ *  waiting and finishing pokedex (child) and pipes associated. Then depending on the
+ *  game mode (2-capture o 3-battle) it ends and waits the childs and closes pipes associated.
+ * */
 void endAsh(){
 
     if (ready_mode==WaitingPokemon){
@@ -82,7 +84,6 @@ void endCombat(){
     
 }
     
-
 void endPokemon(){
 
     char msg [200];
@@ -117,7 +118,6 @@ void endPokedex(){
 
 void launchPokedex(){
 
-    //signal(SIGUSR1, handlerSIG1);
     signal(SIGUSR1, changeStatus);
     signal(SIGINT, endAsh);
     signal(SIGUSR2,SIG_IGN);
@@ -249,15 +249,15 @@ void adventure(){
                                 if(validTurn==0){
                                     waitpid(-1, &st, WUNTRACED);
                                     int status = WEXITSTATUS(st);
-                                    if(status==2){
+                                    if(status==PokemonEscaped){
                                         sprintf(s, "%sThe pokemon escaped already%s\n", KYEL,KNRM);
                                         if (write(1, s, strlen(s)) < 0) perror("Error writting the menu");
                                         endTurn=0;
-                                    } else if (status==3) {
+                                    } else if (status==PokemonCaught) {
                                         sprintf(s, "%sGotcha!The pokemon was caught.%s\n", KGRN,KNRM);
                                         if (write(1, s, strlen(s)) < 0) perror("Error writting the menu");
                                         endTurn=0;
-                                    } else if (status==4) {
+                                    } else if (status==AshEscaped) {
                                         sprintf(s, "%sYou have escaped safely.%s\n", KRED,KNRM);
                                         if (write(1, s, strlen(s)) < 0) perror("Error writting the menu");
                                         endTurn=0;
@@ -277,7 +277,6 @@ void adventure(){
                 if (write(1, s, strlen(s)) < 0) perror("Error writting invalid option");
      } 
 } 
-
 
 }
 

@@ -18,6 +18,9 @@ enum State {WaitingPokedex=1, Ready=2, WaitingPokemon=3, Fighting=4, EndFight=5,
 int current_state;
 int ready_mode;
 
+// Define pokemon capture status
+enum Capture {PokemonEscaped=2, PokemonCaught=3, AshEscaped=4 };
+
 // Define the boolean logic
 #define TRUE 1
 #define FALSE 0
@@ -28,7 +31,7 @@ void endPokedex();
 void endPokemon();
 void endAsh();
 void endCombat();
-void handlerSIG1();
+void changeStatus();
 void adventure();
 void battle();
 void logger(const char* tag, const char* message);

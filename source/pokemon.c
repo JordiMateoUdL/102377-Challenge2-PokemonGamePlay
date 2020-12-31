@@ -5,6 +5,7 @@
 #include <sys/wait.h>
 #include <signal.h>
 #include <errno.h>
+#include "game/ash.h"
 
 int getRandom (int val)
 {
@@ -21,16 +22,16 @@ void init ()
 void action(){
     int option=getRandom(10);
     if(option==7){
-        exit(2);
+        exit(PokemonEscaped);
     } else if (option%2==0){
-        exit(3);
+        exit(PokemonCaught);
     }else{
         raise(SIGSTOP);
     }
 }
 
 void action2(){
-   exit(4); 
+   exit(AshEscaped); 
 }
 
 int main ()
