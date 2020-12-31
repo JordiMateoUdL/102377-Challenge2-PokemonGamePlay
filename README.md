@@ -22,7 +22,7 @@ A UNIX process or job is the result of executing a UNIX command. Processes are c
 a process may be either running or stopped. The UNIX operating system provides many ways to control
 these processes, such as suspending, resuming and terminating.
 
-All the tasks can be found in this document: [OS-2021-Challenge2.pdf](https://github.com/JordiMateoUdL/102377-Challenge2-PokemonGamePlay/files/5757104/OS-2021-Challenge2.pdf)
+All the tasks can be found in this document: [OS-2021-Challenge2.pdf](https://github.com/JordiMateoUdL/102377-Challenge2-PokemonGamePlay/files/5757129/OS-2021-Challenge2.pdf)
 
 ## Organization
 
@@ -51,7 +51,7 @@ All the tasks can be found in this document: [OS-2021-Challenge2.pdf](https://gi
     - *game.c*: Implementation of orchestrator process. The main goal is to handle the overall execution of (ash-px).
     - *Makefile*: This makefile is used to compile and link game and ash implementation and definitions.
   - **test**: This folder contains the tests and the test suite.
-- *Makefile*: This makes file is orchestrator make, that manages the makefiles in the subfolders.
+- *Makefile*: This makefile is the **orchestrator** make. It manages all the makefiles stored in the subfolders.
   
 
 ## How to use the code 
