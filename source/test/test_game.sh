@@ -43,19 +43,7 @@ else
 fi
 
 ## Test 4
-# echo "## Test 4. Ensure user input 1,2 or 3 not ends the process"
-# echo 1 > "$HOME/tmp/myfifo"
-# echo 2 > "$HOME/tmp/myfifo"
-# echo 3 > "$HOME/tmp/myfifo"
-# game_pid=$(pidof game)
-# if [ $game_pid > 0 ]; then
-#   echo -e "    "$GREEN"[PASSED]"$NRM". With user input 1,2 and 3."
-# else
-#   echo -e "    "$RED"[FAILURE]"$NRM". With user input 1,2 and 3."
-# fi
-
-## Test 5
-echo "## Test 5. Ensure user input 4 ends the process"
+echo "## Test 4. Ensure user input 4 ends the process"
 echo 4 > "$HOME/tmp/myfifo"
 game_pid=$(pidof game)
 if [ $game_pid > 0 ]; then
@@ -64,8 +52,8 @@ else
   echo -e "    "$GREEN"[PASSED]"$NRM". With user input 4, the process ends properly."
 fi
 
-## Test 6
-echo "## Test 6. Ensure that once we stop the daemon the game process not runs again..."
+## Test 5
+echo "## Test 5. Ensure that once we stop the daemon the game process not runs again..."
 kill -TERM $pid
 ./game/game > $HOME/tmp/stdout.txt 2>&1 
 retcode=$?

@@ -331,7 +331,6 @@ void battle(){
                 char *pokemon_fight[] = {"pokemon-fight",initialFightMode,color, NULL};
                 execv(pokemon_fight[0], pokemon_fight);
         }
-        printf("p:%d pokemons:%d\n",p,pokemonsReady); fflush(stdout);
         while(pokemonsReady<p){}
     }
 

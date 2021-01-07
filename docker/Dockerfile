@@ -8,8 +8,7 @@ RUN mkdir /root/tmp
 
 ENV USER pokemon-user
 
-COPY ./data /home/$USER/data
-COPY ./source /home/$USER/source
+COPY . /home/$USER/
 
 WORKDIR /home/$USER/
 
