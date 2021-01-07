@@ -86,11 +86,4 @@ make run_pokemond
 docker run -it -v $(PWD):/home/pokemon-user/source  --entrypoint /bin/bash pokemon-service
 ```
 
-- Execute and run automatic in a container
-  
-```bash
-docker run --rm  pokemon-service make run
-docker run --rm  pokemon-service make test
-```
-
 ![logo-eng](https://user-images.githubusercontent.com/61190134/103407749-0eab8f00-4b60-11eb-8b96-c26a90b7cdc6.png)
